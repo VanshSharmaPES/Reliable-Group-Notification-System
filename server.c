@@ -157,6 +157,11 @@ static void remove_subscriber(Group *g, struct sockaddr_in *addr) {
 
 /* ─── Deliver a packet to one subscriber ──────────────────────────────── */
 static void send_to(int sock, const Packet *pkt, const struct sockaddr_in *dst) {
+#ifdef SIMULATED_LOSS
+    if ((rand() % 100) < SIMULATED_LOSS) {
+        return; // Drop packet
+    }
+#endif
     size_t len = HEADER_SIZE + ntohs(pkt->payload_len);
     sendto(sock, pkt, len, 0,
            (const struct sockaddr *)dst, sizeof(*dst));

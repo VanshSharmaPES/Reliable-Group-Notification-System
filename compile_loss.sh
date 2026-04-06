@@ -1,0 +1,1 @@
+gcc -Wall -Wextra -O2 -pthread -DSIMULATED_LOSS=10 server.c -o server_loss

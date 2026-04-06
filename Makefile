@@ -2,12 +2,17 @@ CC      = gcc
 CFLAGS  = -Wall -Wextra -O2 -pthread -I.
 TARGETS = server server_baseline client
 
-.PHONY: all clean run-server run-baseline run-client
+.PHONY: all clean run-server run-baseline run-client server-loss
 
 all: $(TARGETS)
 
 server: server.c packet.h
 	$(CC) $(CFLAGS) $< -o $@
+
+# Target for 10% simulated application-level packet loss
+server-loss: server.c packet.h
+	$(CC) $(CFLAGS) -DSIMULATED_LOSS=10 $< -o server_loss
+
 
 server_baseline: server_baseline.c packet.h
 	$(CC) $(CFLAGS) $< -o $@
